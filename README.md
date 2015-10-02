@@ -10,5 +10,6 @@ Requires Love2D, an open source 2D game engine. All code written in Lua.
 * [Love2D](https://love2d.org/) : "It's free, open-source, and works on Windows, Mac OS X and Linux!"
 * [TileMapEditor](http://sourceforge.net/projects/tilemapeditor2) : Create Tile maps with single image and export as an array.
 * [Lua - The Basics](http://www.lua.org/pil/1.html): How to code in Lua!
+* [SourceTree](https://www.sourcetreeapp.com/): Is git confusing and difficult to use? Don't like using command line tools, but want to use git for version control? Give SourceTree a whirl!
 
 
