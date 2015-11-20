@@ -16,6 +16,8 @@ function love.load()
 	print("GAME LOADING......") -- this is printed on the console that opens in another window.
 	LoadLevel(Levels[1]) 		-- found in map.lua. Loads images for level.
 	--print(KillTiles["1"])
+	x, y = getIndex(1,1)
+	print(map[x][y])
 	--print("Tile 1 is worth "..PointTiles[1] .. " points!")
 	--print("Tile 2 is worth "..PointTiles[2] ..  " points!")
 end
