@@ -9,8 +9,12 @@ require("levels")		-- we also need to know about the levels we've written. They'
 require("SpecialTiles")
 require("player")
 
-guy = {x = 1, y = 1, img = nil, walk = 64, jump = 164, accel = 5, ySpeed = 0, xSpeed = 0}
+
 number = 0
+
+currentLevel = 1
+player = nil
+level = nil
 
 --[[
 	This function is called exactly once at the beginning of the game.
@@ -18,13 +22,12 @@ number = 0
 ]]
 function love.load()
 	print("GAME LOADING......") -- this is printed on the console that opens in another window.
-	LoadLevel(Levels[1]) 		-- found in map.lua. Loads images for level.
-	--print(KillTiles["1"])
-	x, y = getIndex(1,1)
-	print(map[x][y])
+	level = Levels[currentLevel]
+	LoadLevel(level) 		-- found in map.lua. Loads images for level.
+	player = newPlayer(level)
 	--print("Tile 1 is worth "..PointTiles[1] .. " points!")
 	--print("Tile 2 is worth "..PointTiles[2] ..  " points!")
-	guy.img = love.graphics.newImage("Images/guy.png")
+	
 end
 
 
@@ -35,32 +38,64 @@ end
 ]]
 function love.draw()
 	DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
-	love.graphics.draw(guy.img, guy.x, guy.y)
-	love.graphics.print(number,0, 40)
-	love.graphics.print(guy.y,0, 0)
-	love.graphics.print(guy.x,0, 20)
+	drawPlayer()
 end
 
 function love.update(dt)
 
-	number = map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)]
+	number = map[math.ceil((player.y)/16)][math.ceil((player.x+17)/16)]
 
 	if love.keyboard.isDown( 'd' ) then
-		moveRight(guy, dt)
+		moveRight(player, dt)
 	end
 
 	if love.keyboard.isDown( 'a' ) then
-		moveLeft(guy, dt)
+		moveLeft(player, dt)
 	end
 
 	if love.keyboard.isDown( 's' ) then
-		moveDown(guy, dt)
+		moveDown(player, dt)
 	end
 
 	if love.keyboard.isDown( 'w' ) then
-		moveUp(guy, dt)
+		moveUp(player, dt)
 	end
 
-	moveDown(guy, dt)
+	moveDown(player, dt)
 
 end
+
+function newPlayer(level)
+	p= {
+		x = level.startX, 
+		y = level.startY, 
+		img = nil, 
+		walk = 64, 
+		jump = 164,
+		 accel = 5, 
+		 ySpeed = 0, 
+		 xSpeed = 0
+	}
+	p.img = love.graphics.newImage("Images/guy.png")
+	return p;
+end
+
+function drawPlayer()
+	if player ~= nil then
+		love.graphics.draw(player.img, player.x, player.y)
+	end
+end
+
+function onPlayerDie()
+
+end
+
+function onLevelEnd()
+	currentLevel = currentLevel + 1;
+	level = Levels[currentLevel]
+	LoadLevel(level)
+	player = newPlayer(level)
+end
+
+
+
