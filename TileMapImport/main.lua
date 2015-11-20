@@ -65,8 +65,8 @@ function newPlayer(level)
 		y = level.startY, 
 		img = nil, 
 		walk = 128, 
-		jump = 256,
-		 accel = 10, 
+		jump = 288,
+		 accel = 13, 
 		 ySpeed = 0, 
 		 xSpeed = 0
 	}
