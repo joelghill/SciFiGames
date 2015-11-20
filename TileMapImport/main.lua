@@ -28,9 +28,10 @@ end
 
 function moveLeft (player, dt)
 
-	if map[math.ceil((guy.y)/16)][math.ceil((guy.x-1)/16)] == 0 then
+	if map[math.ceil((guy.y)/16)][math.ceil((guy.x-1)/16)] == 0 and
+	map[math.ceil((guy.y+15)/16)][math.ceil((guy.x-1)/16)] == 0 then
 
-		guy.x = guy.x - 16*dt
+		guy.x = guy.x - 64*dt
 
 	else
 
@@ -42,9 +43,10 @@ end
 
 function moveRight (player, dt)
 
-	if map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)] == 0 then
+	if map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)] == 0 and
+	map[math.ceil((guy.y+15)/16)][math.ceil((guy.x+17)/16)] == 0 then
 
-		guy.x = guy.x + 16*dt
+		guy.x = guy.x + 64*dt
 
 	else
 
@@ -59,7 +61,7 @@ function moveDown (player, dt)
 	if map[math.ceil((guy.y+16)/16)][math.ceil((guy.x)/16)] == 0 and
 	map[math.ceil((guy.y+16)/16)][math.ceil((guy.x+15)/16)] == 0 then
 
-		guy.y = guy.y + 32*dt
+		guy.y = guy.y + 64*dt
 
 	else
 
@@ -71,10 +73,10 @@ end
 
 function moveUp (player, dt)
 
-	if map[math.ceil((guy.y)/16)][math.ceil((guy.x)/16)] == 0 and
-	map[math.ceil((guy.y)/16)][math.ceil((guy.x+15)/16)] == 0 then
+	if map[math.ceil((guy.y-1)/16)][math.ceil((guy.x)/16)] == 0 and
+	map[math.ceil((guy.y-1)/16)][math.ceil((guy.x+15)/16)] == 0 then
 
-		guy.y = guy.y - 32*dt
+		guy.y = guy.y - 64*dt
 
 	else
 
