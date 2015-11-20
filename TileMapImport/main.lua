@@ -9,7 +9,8 @@ require("levels")		-- we also need to know about the levels we've written. They'
 require("SpecialTiles")
 require("player")
 
-guy = {x = 1, y = 1, img = nil, walk = 64, jump = 164, accel = 5, ySpeed = 0, xSpeed = 0}
+guy = {x = 64, y = 32, img = nil, walk = 64, jump = 250, accel = 10, 
+	ySpeed = 0, xSpeed = 0}
 number = 0
 
 --[[
@@ -36,14 +37,18 @@ end
 function love.draw()
 	DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
 	love.graphics.draw(guy.img, guy.x, guy.y)
-	love.graphics.print(number,0, 40)
 	love.graphics.print(guy.y,0, 0)
 	love.graphics.print(guy.x,0, 20)
+	love.graphics.print("ySpeed = ",0, 40)
+	love.graphics.print(guy.ySpeed,64, 40)
+	if checkDown(guy) then
+		love.graphics.print("Not Grounded",0, 60)
+	else
+		love.graphics.print("Grounded",0, 60)
+	end
 end
 
 function love.update(dt)
-
-	number = map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)]
 
 	if love.keyboard.isDown( 'd' ) then
 		moveRight(guy, dt)
@@ -51,10 +56,6 @@ function love.update(dt)
 
 	if love.keyboard.isDown( 'a' ) then
 		moveLeft(guy, dt)
-	end
-
-	if love.keyboard.isDown( 's' ) then
-		moveDown(guy, dt)
 	end
 
 	if love.keyboard.isDown( 'w' ) then
