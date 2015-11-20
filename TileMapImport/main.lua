@@ -8,7 +8,8 @@ require("map")			-- we need map.lua and everything in it, so this line makes tha
 require("levels")		-- we also need to know about the levels we've written. They're in levels.lua
 require("SpecialTiles")
 
-guy = {x = 100, y = 100, img = nil}
+guy = {x = 1, y = 1, img = nil}
+number = 0
 
 --[[
 	This function is called exactly once at the beginning of the game.
@@ -27,9 +28,57 @@ end
 
 function moveLeft (player, dt)
 
-	if(map[math.ceil((guy.x-1)/16)][math.ceil((guy.y)/16)] <= 1) and guy.x > 1 then
+	if map[math.ceil((guy.y)/16)][math.ceil((guy.x-1)/16)] == 0 then
 
-		guy.x = guy.x - 10*dt
+		guy.x = guy.x - 16*dt
+
+	else
+
+		guy.x = math.ceil(guy.x)
+
+	end	
+
+end
+
+function moveRight (player, dt)
+
+	if map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)] == 0 then
+
+		guy.x = guy.x + 16*dt
+
+	else
+
+		guy.x = math.ceil(guy.x)
+
+	end	
+
+end
+
+function moveDown (player, dt)
+
+	if map[math.ceil((guy.y+16)/16)][math.ceil((guy.x)/16)] == 0 and
+	map[math.ceil((guy.y+16)/16)][math.ceil((guy.x+15)/16)] == 0 then
+
+		guy.y = guy.y + 32*dt
+
+	else
+
+		guy.y = math.ceil(guy.y)
+
+	end	
+
+end
+
+function moveUp (player, dt)
+
+	if map[math.ceil((guy.y)/16)][math.ceil((guy.x)/16)] == 0 and
+	map[math.ceil((guy.y)/16)][math.ceil((guy.x+15)/16)] == 0 then
+
+		guy.y = guy.y - 32*dt
+
+	else
+
+		guy.y = math.ceil(guy.y)
 
 	end	
 
@@ -43,10 +92,28 @@ end
 function love.draw()
 	DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
 	love.graphics.draw(guy.img, guy.x, guy.y)
+	love.graphics.print(number,0, 20)
+	love.graphics.print(guy.x/16,0, 0)
 end
 
 function love.update(dt)
 
-	moveLeft(guy, dt)
+	number = map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)]
+
+	if love.keyboard.isDown( 'd' ) then
+		moveRight(guy, dt)
+	end
+
+	if love.keyboard.isDown( 'a' ) then
+		moveLeft(guy, dt)
+	end
+
+	if love.keyboard.isDown( 's' ) then
+		moveDown(guy, dt)
+	end
+
+	if love.keyboard.isDown( 'w' ) then
+		moveUp(guy, dt)
+	end
 
 end
