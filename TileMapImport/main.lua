@@ -43,18 +43,12 @@ end
 
 function love.update(dt)
 
-	number = map[math.ceil((player.y)/16)][math.ceil((player.x+17)/16)]
-
 	if love.keyboard.isDown( 'd' ) then
 		moveRight(player, dt)
 	end
 
 	if love.keyboard.isDown( 'a' ) then
 		moveLeft(player, dt)
-	end
-
-	if love.keyboard.isDown( 's' ) then
-		moveDown(player, dt)
 	end
 
 	if love.keyboard.isDown( 'w' ) then
@@ -74,9 +68,9 @@ function newPlayer(level)
 		x = level.startX, 
 		y = level.startY, 
 		img = nil, 
-		walk = 64, 
-		jump = 164,
-		 accel = 5, 
+		walk = 128, 
+		jump = 256,
+		 accel = 10, 
 		 ySpeed = 0, 
 		 xSpeed = 0
 	}

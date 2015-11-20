@@ -34,7 +34,7 @@ function moveLeft (player, dt)
 
 	if checkLeft(player) then
 
-		player.x = player.x - 64*dt
+		player.x = player.x - player.walk*dt
 
 	else
 
@@ -48,7 +48,7 @@ function moveRight (player, dt)
 
 	if checkRight(player) then
 
-		player.x = player.x + 64*dt
+		player.x = player.x + player.walk*dt
 
 	else
 
@@ -60,16 +60,21 @@ end
 
 function moveDown (player, dt)
 
+	player.y = player.y + player.ySpeed*dt
+
 	if checkDown(player) then
 
-		player.y = player.y + player.ySpeed*dt
-		player.ySpeed = player.ySpeed + 0.1
+		--player.y = player.y + player.ySpeed*dt
+		player.ySpeed = player.ySpeed + player.accel
 
-	else
+	elseif player.ySpeed > 0 then
 
 		offset = player.y - math.floor(player.y/16)*16
 		player.ySpeed = 0
-		player.y = player.y - offset
+
+		if offset > 0 then
+			player.y = player.y - offset + 1
+		end
 
 	end	
 
@@ -77,13 +82,12 @@ end
 
 function moveUp (player, dt)
 
-	if checkUp(player) and player.ySpeed == 0 then
-
-		player.ySpeed = player.jump
+	if checkDown(player) then
 
 	else
 
-		--player.y = math.ceil(player.y)
+		player.y = player.y
+		player.ySpeed = -player.jump
 
 	end	
 
