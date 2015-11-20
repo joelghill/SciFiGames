@@ -7,8 +7,9 @@
 require("map")			-- we need map.lua and everything in it, so this line makes that happen!
 require("levels")		-- we also need to know about the levels we've written. They're in levels.lua
 require("SpecialTiles")
+require("player")
 
-guy = {x = 1, y = 1, img = nil}
+guy = {x = 1, y = 1, img = nil, walk = 64, jump = 164, accel = 5, ySpeed = 0, xSpeed = 0}
 number = 0
 
 --[[
@@ -26,65 +27,6 @@ function love.load()
 	guy.img = love.graphics.newImage("Images/guy.png")
 end
 
-function moveLeft (player, dt)
-
-	if map[math.ceil((guy.y)/16)][math.ceil((guy.x-1)/16)] == 0 and
-	map[math.ceil((guy.y+15)/16)][math.ceil((guy.x-1)/16)] == 0 then
-
-		guy.x = guy.x - 64*dt
-
-	else
-
-		guy.x = math.ceil(guy.x)
-
-	end	
-
-end
-
-function moveRight (player, dt)
-
-	if map[math.ceil((guy.y)/16)][math.ceil((guy.x+17)/16)] == 0 and
-	map[math.ceil((guy.y+15)/16)][math.ceil((guy.x+17)/16)] == 0 then
-
-		guy.x = guy.x + 64*dt
-
-	else
-
-		guy.x = math.ceil(guy.x)
-
-	end	
-
-end
-
-function moveDown (player, dt)
-
-	if map[math.ceil((guy.y+16)/16)][math.ceil((guy.x)/16)] == 0 and
-	map[math.ceil((guy.y+16)/16)][math.ceil((guy.x+15)/16)] == 0 then
-
-		guy.y = guy.y + 64*dt
-
-	else
-
-		guy.y = math.ceil(guy.y)
-
-	end	
-
-end
-
-function moveUp (player, dt)
-
-	if map[math.ceil((guy.y-1)/16)][math.ceil((guy.x)/16)] == 0 and
-	map[math.ceil((guy.y-1)/16)][math.ceil((guy.x+15)/16)] == 0 then
-
-		guy.y = guy.y - 64*dt
-
-	else
-
-		guy.y = math.ceil(guy.y)
-
-	end	
-
-end
 
 --[[
 	Draw an image that was loaded in love.load 
@@ -94,8 +36,9 @@ end
 function love.draw()
 	DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
 	love.graphics.draw(guy.img, guy.x, guy.y)
-	love.graphics.print(number,0, 20)
-	love.graphics.print(guy.x/16,0, 0)
+	love.graphics.print(number,0, 40)
+	love.graphics.print(guy.y,0, 0)
+	love.graphics.print(guy.x,0, 20)
 end
 
 function love.update(dt)
@@ -117,5 +60,7 @@ function love.update(dt)
 	if love.keyboard.isDown( 'w' ) then
 		moveUp(guy, dt)
 	end
+
+	moveDown(guy, dt)
 
 end
