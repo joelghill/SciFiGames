@@ -80,7 +80,7 @@ function DrawLevel()
 	end
 	--here, all of the quads have been added, and now we draw all of them at once!
 	xOffset , yOffset = calculateOffset(windowWidth, windowHeight)
-	love.graphics.draw(spriteBatch, xOffset, yOffset)
+	love.graphics.draw(spriteBatch)--, xOffset, yOffset)
 end
 
 --[[
@@ -124,4 +124,10 @@ function getNumQuads(image, tilew, tileh)
 	widthQuads = (image:getWidth()/tilew)
 	heightQuads = (image:getHeight()/tileh)
 	return widthQuads*heightQuads
+end
+
+function getIndex(x, y)
+	indX = math.floor(x/tilewidth) + 1
+	indY = math.floor(y/tileheight) + 1
+	return indX, indY
 end
