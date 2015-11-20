@@ -60,6 +60,10 @@ function love.update(dt)
 	if love.keyboard.isDown( 'w' ) then
 		moveUp(player, dt)
 	end
+	
+	if love.keyboard.isDown( 'n' ) then
+		onLevelEnd()
+	end
 
 	moveDown(player, dt)
 
@@ -93,8 +97,11 @@ end
 function onLevelEnd()
 	currentLevel = currentLevel + 1;
 	level = Levels[currentLevel]
-	LoadLevel(level)
-	player = newPlayer(level)
+	if level ~= nil then
+		LoadLevel(level)
+		player = newPlayer(level)
+	end
+		
 end
 
 
