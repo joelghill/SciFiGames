@@ -17,8 +17,8 @@ function checkRight(player)
 end
 
 function checkDown(player)
-	if map[math.ceil((player.y+17)/16)][math.ceil((player.x)/16)] == 0 and
-	map[math.ceil((player.y+17)/16)][math.ceil((player.x+15)/16)] == 0 then
+	if map[math.ceil((player.y+16)/16)][math.ceil((player.x)/16)] == 0 and
+	map[math.ceil((player.y+16)/16)][math.ceil((player.x+15)/16)] == 0 then
 		return true
 	end
 end
@@ -34,7 +34,7 @@ function moveLeft (player, dt)
 
 	if checkLeft(player) then
 
-		player.x = player.x - 64*dt
+		player.x = player.x - player.walk*dt
 
 	else
 
@@ -48,7 +48,7 @@ function moveRight (player, dt)
 
 	if checkRight(player) then
 
-		player.x = player.x + 64*dt
+		player.x = player.x + player.walk*dt
 
 	else
 
@@ -72,7 +72,7 @@ function moveDown (player, dt)
 		offset = player.y - math.floor(player.y/16)*16
 		player.ySpeed = 0
 
-		if offset > 1 then
+		if offset > 0 then
 			player.y = player.y - offset + 1
 		end
 
