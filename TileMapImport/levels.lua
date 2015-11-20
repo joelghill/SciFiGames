@@ -22,7 +22,7 @@ level1map = {
 };
 
 --Create instance of a level
-level1 = Level.New(level1map, level1image)
+level1 = Level.New(level1map, level1image, 50,50)
 
 --add to list of levels
 Levels = {
