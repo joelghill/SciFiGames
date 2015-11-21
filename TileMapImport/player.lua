@@ -165,7 +165,7 @@ end
 
 function jump (player, dt)
 
-	if checkDown(player) == 0 then
+	if noCollideDown() then
 
 	else
 

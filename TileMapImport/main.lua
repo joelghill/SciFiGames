@@ -97,7 +97,7 @@ function newPlayer(level)
 		img = nil, 
 		walk = 200, 
 		jump = 400,
-		accel = 1000, 
+		accel = 1200, 
 		ySpeed = 0, 
 		xSpeed = 0,
 		width = 0,
