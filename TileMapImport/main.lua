@@ -52,14 +52,14 @@ function love.update(dt)
 	end
 
 	if love.keyboard.isDown( 'w' ) then
-		moveUp(player, dt)
+		jump(player, dt)
 	end
 	
 	if love.keyboard.isDown( 'n' ) then
 		onLevelEnd()
 	end
 
-	moveDown(player, dt)
+	gravity(player, dt)
 
 end
 
@@ -70,7 +70,7 @@ function newPlayer(level)
 		img = nil, 
 		walk = 128, 
 		jump = 288,
-		accel = 13, 
+		accel = 725, 
 		ySpeed = 0, 
 		xSpeed = 0,
 		width = 0,

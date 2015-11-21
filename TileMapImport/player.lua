@@ -17,7 +17,7 @@ end
 
 -- Returns the highest tile number on the player's right edge
 function checkRight(player)
-	top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+17)/16)]
+	top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+player.width+1)/16)]
 	bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)]
 	
 	if top > bottom then
@@ -40,15 +40,19 @@ function checkDown(player)
 end
 
 function checkUp(player)
-	left = map[math.ceil((player.y-1)/16)][math.ceil((player.x)/16)]
-	right = map[math.ceil((player.y-1)/16)][math.ceil((player.x+player.width-1)/16)]
+	y1 = math.ceil((player.y-1)/16)
+	x1 = math.ceil((player.x)/16)
+	y2 = math.ceil((player.y-1)/16)
+	x2 = math.ceil((player.x+player.width-1)/16)
+	left = map[y1][x1]
+	right = map[y2][x2]
 	
 	if right > left then
 		return right
 	else
 		return left
 	end
-	
+
 end
 
 function moveLeft (player, dt)
@@ -87,29 +91,29 @@ function moveRight (player, dt)
 
 end
 
-function moveDown (player, dt)
+function gravity (player, dt)
 
 	player.y = player.y + player.ySpeed*dt
 
 	if checkDown(player) == 0 then
 
 		--player.y = player.y + player.ySpeed*dt
-		player.ySpeed = player.ySpeed + player.accel
+		player.ySpeed = player.ySpeed + player.accel*dt
 
-	elseif player.ySpeed > 0 then
+	else--if player.ySpeed > 0 then
 
-		offset = player.y - math.floor(player.y/16)*16
+		offset = (player.y + player.height ) - math.floor((player.y + player.height )/16)*16
 		player.ySpeed = 0
 
-		if offset > 0 then
-			player.y = player.y - offset + 1
+		if offset > 1 then
+			player.y = player.y - offset 
 		end
 
 	end	
 
 end
 
-function moveUp (player, dt)
+function jump (player, dt)
 
 	if checkDown(player) == 0 then
 
