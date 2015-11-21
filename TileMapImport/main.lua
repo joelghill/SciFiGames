@@ -12,6 +12,8 @@ require("player")
 currentLevel = 1
 player = nil
 level = nil
+gameOver = false
+gameStart = false
 
 --[[
 	This function is called exactly once at the beginning of the game.
@@ -30,12 +32,36 @@ end
 	which would cause issues).
 ]]
 function love.draw()
-	DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
-	drawPlayer()
+	if gameStart and not gameOver then
+		DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
+		drawPlayer()
+	end
+	if not gameStart and not gameOver then
+		--- draw start screen
+		love.graphics.print("Press space bar to start!", 400, 300)
+	end
+	
+	if gameOver then
+		love.graphics.print("GAME OVER", 400, 300)
+	end
+	
+	
+	
 end
 
 function love.update(dt)
-
+	if love.keyboard.isDown(' ') and not gameStart then
+		gameStart = true
+		gameOver = false
+	end 
+	
+	if love.keyboard.isDown(' ') and gameOver then
+		gameStart = true
+		gameOver = false
+		loadCurrentLevel()
+	end 
+	
+	
 	if love.keyboard.isDown( 'd' ) then
 		moveRight(player, dt)
 	end
@@ -49,9 +75,9 @@ function love.update(dt)
 	end
 	
 	if love.keyboard.isDown( 'n' ) then
-		onLevelEnd()
+		onPlayerDie()
 	end
-
+	
 	gravity(player, dt)
 
 end
@@ -82,7 +108,7 @@ function drawPlayer()
 end
 
 function onPlayerDie()
-
+	gameOver = true
 end
 
 function onLevelEnd()
@@ -97,6 +123,8 @@ function loadCurrentLevel()
 	if level ~= nil then
 		LoadLevel(level)
 		player = newPlayer(level)
+		--gameStart = true
+		--gameOver = false
 	end
 end
 
