@@ -70,11 +70,15 @@ function newPlayer(level)
 		img = nil, 
 		walk = 128, 
 		jump = 288,
-		 accel = 13, 
-		 ySpeed = 0, 
-		 xSpeed = 0
+		accel = 13, 
+		ySpeed = 0, 
+		xSpeed = 0,
+		width = 0,
+		height = 0
 	}
 	p.img = love.graphics.newImage("Images/guy.png")
+	p.width = p.img:getWidth()
+	p.height = p.img:getHeight()
 	return p;
 end
 

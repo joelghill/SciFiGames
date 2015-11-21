@@ -4,28 +4,28 @@ require("SpecialTiles")
 
 function checkLeft(player)
 	if map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)] == 0 and
-	map[math.ceil((player.y+15)/16)][math.ceil((player.x-1)/16)] == 0 then
+	map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)] == 0 then
 		return true
 	end
 end
 
 function checkRight(player)
 	if map[math.ceil((player.y+1)/16)][math.ceil((player.x+17)/16)] == 0 and
-	map[math.ceil((player.y+15)/16)][math.ceil((player.x+17)/16)] == 0 then
+	map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)] == 0 then
 		return true
 	end
 end
 
 function checkDown(player)
-	if map[math.ceil((player.y+16)/16)][math.ceil((player.x+1)/16)] == 0 and
-	map[math.ceil((player.y+16)/16)][math.ceil((player.x+15)/16)] == 0 then
+	if map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+1)/16)] == 0 and
+	map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-1)/16)] == 0 then
 		return true
 	end
 end
 
 function checkUp(player)
 	if map[math.ceil((player.y-1)/16)][math.ceil((player.x)/16)] == 0 and
-	map[math.ceil((player.y-1)/16)][math.ceil((player.x+15)/16)] == 0 then
+	map[math.ceil((player.y-1)/16)][math.ceil((player.x+player.width-1)/16)] == 0 then
 		return true
 	end
 end
