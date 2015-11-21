@@ -22,7 +22,7 @@ gameStart = false
 function love.load()
 	print("GAME LOADING......") -- this is printed on the console that opens in another window.
 	loadCurrentLevel()
-	player = newPlayer(level)
+	--player = newPlayer(level)
 end
 
 
@@ -61,7 +61,10 @@ function love.update(dt)
 		loadCurrentLevel()
 	end 
 	
-	
+	if not gameStart or gameOver then
+		return
+	end
+		
 	if love.keyboard.isDown( 'd' ) then
 		moveRight(player, dt)
 	end
@@ -102,6 +105,7 @@ function newPlayer(level)
 end
 
 function drawPlayer()
+-- if th player table exists, draw the image saved there.
 	if player ~= nil then
 		love.graphics.draw(player.img, player.x, player.y)
 	end
