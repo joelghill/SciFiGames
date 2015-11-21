@@ -2,37 +2,58 @@ require("map")			-- we need map.lua and everything in it, so this line makes tha
 require("levels")		-- we also need to know about the levels we've written. They're in levels.lua
 require("SpecialTiles")
 
+-- Returns the highest tile number on the player's left edge
 function checkLeft(player)
-	if map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)] == 0 and
-	map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)] == 0 then
-		return true
+	top = map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)]
+	bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)]
+	
+	if top > bottom then
+		return top
+	else
+		return bottom
 	end
+
 end
 
+-- Returns the highest tile number on the player's right edge
 function checkRight(player)
-	if map[math.ceil((player.y+1)/16)][math.ceil((player.x+17)/16)] == 0 and
-	map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)] == 0 then
-		return true
+	top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+17)/16)]
+	bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)]
+	
+	if top > bottom then
+		return top
+	else
+		return bottom
 	end
+
 end
 
 function checkDown(player)
-	if map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+1)/16)] == 0 and
-	map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-1)/16)] == 0 then
-		return true
+	right = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+1)/16)]
+	left = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-1)/16)]
+	
+	if right > left then
+		return right
+	else
+		return left
 	end
 end
 
 function checkUp(player)
-	if map[math.ceil((player.y-1)/16)][math.ceil((player.x)/16)] == 0 and
-	map[math.ceil((player.y-1)/16)][math.ceil((player.x+player.width-1)/16)] == 0 then
-		return true
+	left = map[math.ceil((player.y-1)/16)][math.ceil((player.x)/16)]
+	right = map[math.ceil((player.y-1)/16)][math.ceil((player.x+player.width-1)/16)]
+	
+	if right > left then
+		return right
+	else
+		return left
 	end
+	
 end
 
 function moveLeft (player, dt)
 
-	if checkLeft(player) then
+	if checkLeft(player) == 0 then
 
 		player.x = player.x - player.walk*dt
 
@@ -50,7 +71,7 @@ end
 
 function moveRight (player, dt)
 
-	if checkRight(player) then
+	if checkRight(player) == 0 then
 
 		player.x = player.x + player.walk*dt
 
@@ -70,7 +91,7 @@ function moveDown (player, dt)
 
 	player.y = player.y + player.ySpeed*dt
 
-	if checkDown(player) then
+	if checkDown(player) == 0 then
 
 		--player.y = player.y + player.ySpeed*dt
 		player.ySpeed = player.ySpeed + player.accel
@@ -90,7 +111,7 @@ end
 
 function moveUp (player, dt)
 
-	if checkDown(player) then
+	if checkDown(player) == 0 then
 
 	else
 
