@@ -41,10 +41,11 @@ end
 function checkDown(player)
 	
 	if player.y+player.height < getPixelHeight() then
-		right = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+1)/16)]
-		left = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-1)/16)]
+		right = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+2)/16)]
+		left = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-2)/16)]
 	else
-		return 1
+		onPlayerDie()
+		return 0
 	end
 	
 	if right > left then
@@ -71,9 +72,20 @@ end
 
 end
 
+function noCollideLeft()
+
+	if checkLeft(player) == 0 or
+		checkLeft(player) == 21 or
+		checkLeft(player) == 24 then
+			return true
+	else
+		return false
+	end
+end
+
 function moveLeft (player, dt)
 
-	if checkLeft(player) == 0 then
+	if noCollideLeft() then
 
 		player.x = player.x - player.walk*dt
 
@@ -81,17 +93,28 @@ function moveLeft (player, dt)
 
 		offset = player.x - math.ceil(player.x/16)*16
 
-		if offset > 1 then
-			player.x = player.x + offset
+		if offset > 0 then
+			player.x = player.x + offset + 2
 		end
 
 	end	
 
 end
 
+function noCollideRight()
+
+	if checkRight(player) == 0 or
+		checkRight(player) == 21 or
+		checkRight(player) == 24 then
+			return true
+	else
+		return false
+	end
+end
+
 function moveRight (player, dt)
 
-	if checkRight(player) == 0 then
+	if noCollideRight() then
 
 		player.x = player.x + player.walk*dt
 
@@ -107,11 +130,22 @@ function moveRight (player, dt)
 
 end
 
+function noCollideDown()
+
+	if checkDown(player) == 0 or
+		checkDown(player) == 21 or
+		checkDown(player) == 24 then
+			return true
+	else
+		return false
+	end
+end
+
 function gravity (player, dt)
 
 	player.y = player.y + player.ySpeed*dt
 
-	if checkDown(player) == 0 then
+	if noCollideDown() then
 
 		--player.y = player.y + player.ySpeed*dt
 		player.ySpeed = player.ySpeed + player.accel*dt
