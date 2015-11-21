@@ -2,13 +2,27 @@ require("map")			-- we need map.lua and everything in it, so this line makes tha
 require("levels")		-- we also need to know about the levels we've written. They're in levels.lua
 require("SpecialTiles")
 
+function onScreen ()
+
+	if player.x > 1 and 
+	player.x + player.width + 1 < getPixelWidth() and
+	player.y+player.height < getPixelHeight() and
+	player.y > 1 then
+		
+		return true
+	else
+		return false
+	end
+
+end
+
 -- Returns the highest tile number on the player's left edge
 function checkLeft(player)
-	if player.x > 1 then
+	if onScreen () then
 		top = map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)]
 		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)]
 	else
-		return 1
+		return 0
 	end
 	
 	if top > bottom then
@@ -22,12 +36,12 @@ end
 -- Returns the highest tile number on the player's right edge
 function checkRight(player)
 
-	if player.x + player.width + 1 < getPixelWidth() then
+	if onScreen () then
 		love.graphics.print(getPixelWidth(),0,0)
 		top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+player.width+1)/16)]
 		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)]
 	else
-		return 1
+		return 0
 	end
 	
 	if top > bottom then
@@ -40,9 +54,11 @@ end
 
 function checkDown(player)
 	
-	if player.y+player.height < getPixelHeight() then
+	if onScreen () then
 		right = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+2)/16)]
 		left = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-2)/16)]
+	elseif player.y+player.height < love.graphics.getHeight() then
+		return 0
 	else
 		onPlayerDie()
 		return 0
@@ -56,7 +72,7 @@ function checkDown(player)
 end
 
 function checkUp(player)
-if player.y+player.height < getPixelHeight() then
+if onScreen () then
 	y1 = math.ceil((player.y-1)/16)
 	x1 = math.ceil((player.x)/16)
 	y2 = math.ceil((player.y-1)/16)
