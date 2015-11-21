@@ -131,3 +131,11 @@ function getIndex(x, y)
 	indY = math.floor(y/tileheight) + 1
 	return indX, indY
 end
+
+function getPixelHeight()
+	return (tileheight*mapheight)
+end
+
+function getPixelWidth()
+	return (tilewidth*mapwidth)
+end

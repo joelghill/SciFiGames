@@ -4,8 +4,12 @@ require("SpecialTiles")
 
 -- Returns the highest tile number on the player's left edge
 function checkLeft(player)
-	top = map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)]
-	bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)]
+	if player.x > 1 then
+		top = map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)]
+		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)]
+	else
+		return 1
+	end
 	
 	if top > bottom then
 		return top
@@ -17,8 +21,14 @@ end
 
 -- Returns the highest tile number on the player's right edge
 function checkRight(player)
-	top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+player.width+1)/16)]
-	bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)]
+
+	if player.x + player.width + 1 < getPixelWidth() then
+		love.graphics.print(getPixelWidth(),0,0)
+		top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+player.width+1)/16)]
+		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)]
+	else
+		return 1
+	end
 	
 	if top > bottom then
 		return top
@@ -29,8 +39,13 @@ function checkRight(player)
 end
 
 function checkDown(player)
-	right = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+1)/16)]
-	left = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-1)/16)]
+	
+	if player.y+player.height < getPixelHeight() then
+		right = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+1)/16)]
+		left = map[math.ceil((player.y+player.height)/16)][math.ceil((player.x+player.width-1)/16)]
+	else
+		return 1
+	end
 	
 	if right > left then
 		return right
@@ -40,13 +55,14 @@ function checkDown(player)
 end
 
 function checkUp(player)
+if player.y+player.height < getPixelHeight() then
 	y1 = math.ceil((player.y-1)/16)
 	x1 = math.ceil((player.x)/16)
 	y2 = math.ceil((player.y-1)/16)
 	x2 = math.ceil((player.x+player.width-1)/16)
 	left = map[y1][x1]
 	right = map[y2][x2]
-	
+end	
 	if right > left then
 		return right
 	else
