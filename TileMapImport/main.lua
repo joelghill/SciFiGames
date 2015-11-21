@@ -33,16 +33,17 @@ end
 ]]
 function love.draw()
 	if gameStart and not gameOver then
+		drawBackground()
 		DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
 		drawPlayer()
 	end
 	if not gameStart and not gameOver then
 		--- draw start screen
-		love.graphics.print("Press space bar to start!", 400, 300)
+		drawStartScreen()
 	end
 	
 	if gameOver then
-		love.graphics.print("GAME OVER", 400, 300)
+		drawGameOverScreen()
 	end
 	
 	
@@ -50,6 +51,10 @@ function love.draw()
 end
 
 function love.update(dt)
+	if player.y > love.graphics.getHeight() then
+		onPlayerDie()
+	end
+	
 	if love.keyboard.isDown(' ') and not gameStart then
 		gameStart = true
 		gameOver = false
@@ -139,6 +144,18 @@ end
 function loadNextLevel()
 	currentLevel = currentLevel + 1
 	loadCurrentLevel()
+end
+
+function drawStartScreen()
+	love.graphics.print("Press space bar to start!", 400, 300)
+end
+
+function drawGameOverScreen()
+	love.graphics.print("GAME OVER", 400, 300)
+end
+
+function drawBackground()
+-- add background image if you want....
 end
 
 
