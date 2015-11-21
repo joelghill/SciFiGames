@@ -9,9 +9,6 @@ require("levels")		-- we also need to know about the levels we've written. They'
 require("SpecialTiles")
 require("player")
 
-
-number = 0
-
 currentLevel = 1
 player = nil
 level = nil
@@ -22,12 +19,8 @@ level = nil
 ]]
 function love.load()
 	print("GAME LOADING......") -- this is printed on the console that opens in another window.
-	level = Levels[currentLevel]
-	LoadLevel(level) 		-- found in map.lua. Loads images for level.
+	loadCurrentLevel()
 	player = newPlayer(level)
-	--print("Tile 1 is worth "..PointTiles[1] .. " points!")
-	--print("Tile 2 is worth "..PointTiles[2] ..  " points!")
-	
 end
 
 
@@ -93,14 +86,29 @@ function onPlayerDie()
 end
 
 function onLevelEnd()
-	currentLevel = currentLevel + 1;
+	if hasNextLevel() then
+		loadNextLevel()
+	end
+		
+end
+
+function loadCurrentLevel()
 	level = Levels[currentLevel]
 	if level ~= nil then
 		LoadLevel(level)
 		player = newPlayer(level)
 	end
-		
 end
+
+function hasNextLevel()
+	return currentLevel <= table.getn(Levels)
+end
+
+function loadNextLevel()
+	currentLevel = currentLevel + 1
+	loadCurrentLevel()
+end
+
 
 
 
