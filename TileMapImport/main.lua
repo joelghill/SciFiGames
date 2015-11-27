@@ -32,6 +32,7 @@ end
 	which would cause issues).
 ]]
 function love.draw()
+
 	if gameStart and not gameOver then
 		drawBackground()
 		DrawLevel()		-- map.lua. Draws all images loaded when LoadLevel was called.
@@ -46,11 +47,12 @@ function love.draw()
 		drawGameOverScreen()
 	end
 	
-	
+	love.graphics.print((player.y + player.height ) - math.floor((player.y + player.height )/16)*16,0,0)
 	
 end
 
 function love.update(dt)
+
 	if player.y > love.graphics.getHeight() then
 		onPlayerDie()
 	end
@@ -98,7 +100,7 @@ function newPlayer(level)
 		walk = 200, 
 		jump = 400,
 		accel = 1200, 
-		ySpeed = 0, 
+		ySpeed = 50, 
 		xSpeed = 0,
 		width = 0,
 		height = 0
@@ -110,7 +112,7 @@ function newPlayer(level)
 end
 
 function drawPlayer()
--- if th player table exists, draw the image saved there.
+-- if the player table exists, draw the image saved there.
 	if player ~= nil then
 		love.graphics.draw(player.img, player.x, player.y)
 	end

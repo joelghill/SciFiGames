@@ -19,8 +19,8 @@ end
 -- Returns the highest tile number on the player's left edge
 function checkLeft(player)
 	if onScreen () then
-		top = map[math.ceil((player.y)/16)][math.ceil((player.x-1)/16)]
-		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-1)/16)]
+		top = map[math.ceil((player.y+1)/16)][math.ceil((player.x-2)/16)]
+		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x-2)/16)]
 	else
 		return 0
 	end
@@ -38,8 +38,8 @@ function checkRight(player)
 
 	if onScreen () then
 		love.graphics.print(getPixelWidth(),0,0)
-		top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+player.width+1)/16)]
-		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+1)/16)]
+		top = map[math.ceil((player.y+1)/16)][math.ceil((player.x+player.width+2)/16)]
+		bottom = map[math.ceil((player.y+player.height-1)/16)][math.ceil((player.x+player.width+2)/16)]
 	else
 		return 0
 	end
@@ -71,15 +71,17 @@ function checkDown(player)
 	end
 end
 
-function checkUp(player)
-if onScreen () then
-	y1 = math.ceil((player.y-1)/16)
-	x1 = math.ceil((player.x)/16)
-	y2 = math.ceil((player.y-1)/16)
-	x2 = math.ceil((player.x+player.width-1)/16)
-	left = map[y1][x1]
-	right = map[y2][x2]
-end	
+function checkUp(player) 
+
+	if onScreen () then
+		y1 = math.ceil((player.y-1)/16)
+		x1 = math.ceil((player.x)/16)
+		y2 = math.ceil((player.y-1)/16)
+		x2 = math.ceil((player.x+player.width-1)/16)
+		left = map[y1][x1]
+		right = map[y2][x2]
+	end	
+
 	if right > left then
 		return right
 	else
@@ -89,7 +91,6 @@ end
 end
 
 function noCollideLeft()
-
 	if checkLeft(player) == 0 or
 		checkLeft(player) == 21 or
 		checkLeft(player) == 24 then
@@ -107,10 +108,12 @@ function moveLeft (player, dt)
 
 	else
 
-		offset = player.x - math.ceil(player.x/16)*16
+		offset = player.x - math.floor(player.x/16)*16
 
-		if offset > 0 then
-			player.x = player.x + offset + 2
+		if offset > 8 then
+			player.x = player.x + (16-offset) 
+		else
+			player.x = player.x - offset
 		end
 
 	end	
@@ -135,13 +138,16 @@ function moveRight (player, dt)
 		player.x = player.x + player.walk*dt
 
 	else
+		
+		pos = player.x
+	
+		offset = player.x + player.width - math.floor((player.x + player.width)/16)*16
 
-		offset = player.x - math.ceil(player.x/16)*16
-
-		if offset > 1 then
-			player.x = player.x - offset
+		if offset < 8 then
+			player.x = player.x - offset 
+		else
+			player.x = player.x + (16-offset)
 		end
-
 	end	
 
 end
@@ -171,8 +177,8 @@ function gravity (player, dt)
 		offset = (player.y + player.height ) - math.floor((player.y + player.height )/16)*16
 		player.ySpeed = 0
 
-		if offset > 1 then
-			player.y = player.y - offset 
+		if offset > 0 then
+			player.y = player.y - offset + 0.1 
 		end
 
 	end	
@@ -183,7 +189,7 @@ function jump (player, dt)
 
 	if noCollideDown() then
 
-	else
+	elseif player.ySpeed == 0 then
 
 		player.y = player.y
 		player.ySpeed = -player.jump
